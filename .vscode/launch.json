@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SimulatorApplication<simulator>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "io.ramzi.elevator.simulator.SimulatorApplication",
+            "projectName": "simulator",
+            "args": ""
+        }
+    ]
+}

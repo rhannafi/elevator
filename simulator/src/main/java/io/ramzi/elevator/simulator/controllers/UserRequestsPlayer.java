@@ -29,10 +29,11 @@ public class UserRequestsPlayer {
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {            
-            String json = objectMapper.writeValueAsString(payload);
-            System.out.println(json);
+            String json = objectMapper.writeValueAsString(payload);            
             JSONObject jsonObject = (JSONObject)JSONValue.parse(json);
-            JSONArray callsArray = (JSONArray) jsonObject.get("calls");            
+            JSONArray callsArray = (JSONArray) jsonObject.get("calls");
+            System.out.println(callsArray.toString());
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
