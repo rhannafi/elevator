@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"maven.view": "flat",
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"java.autobuild.enabled": false,
+		"java.codeGeneration.generateComments": true
+	}
+}
