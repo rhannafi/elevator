@@ -8,13 +8,15 @@ import javax.persistence.Id;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode
 @Entity
-public class UserRequest {
+@AllArgsConstructor
+public class UserRequestEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -24,22 +26,22 @@ public class UserRequest {
 
     @NotNull
     @Column (nullable = false)
-    private int timestamp;
+    private long timestamp;
 
     @NotNull
     @Column (nullable = false)
-    private int building;
+    private long building;
 
     @NotNull
     @Column (name="[GROUP]",nullable = false)
-    private int group;
+    private long group;
 
     @NotNull
     @Column (nullable = false)
-    private int elevator;
+    private long elevator;
 
     @NotNull
     @Column (nullable = false)
-    private int sens;
+    private long sens;
     
 }
