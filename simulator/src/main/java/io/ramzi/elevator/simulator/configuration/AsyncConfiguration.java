@@ -22,6 +22,8 @@ public class AsyncConfiguration {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(100);
+        // Allow thread free time 60 seconds: When the thread beyond the core thread is destroyed after the idle time arrives
+        executor.setKeepAliveSeconds(60);
         executor.setThreadNamePrefix("User Request Thread -");
         executor.initialize();
         return executor;

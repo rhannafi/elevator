@@ -19,19 +19,19 @@ public class UserRequestsController {
     @Autowired
     UserRequestService userRequestService;
     
-    @GetMapping("/api/v1/test")
+    @GetMapping("/api/v1/alive")
 	public String testPresent() {
 		return "I am waiting you to send the user requests file to play!";
 	}
 
-    @JsonPropertyOrder({ "timestamp", "building", "group", "elevator", "sens" })
+    @JsonPropertyOrder({ "user_request_sequence_id" , "user_request_id" , "timestamp", "building", "group", "elevator", "sens" })
 	@RequestMapping(value = "/api/v1/process_json",method = RequestMethod.POST)
-	public void processJsone(@RequestBody Map<String, Object> userRequestSequence) throws Exception {        
-        for(int i=0 ; i<20; i++) {
-            userRequestService.saveUserRequest(userRequestSequence);
-        }
+	public void processJson(@RequestBody Map<String, Object> userRequestSequence) throws Exception {        
+        userRequestService.saveUserRequest(userRequestSequence);
+        userRequestService.saveUserRequest(userRequestSequence);
 	}
 
+    
 
 
 }

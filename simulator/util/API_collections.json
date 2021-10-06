@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "OpenAPI definition",
+      "version": "v0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8081/",
+        "description": "Generated server url"
+      }
+    ],
+    "paths": {
+      "/api/v1/process_json": {
+        "post": {
+          "tags": [
+            "user-requests-controller"
+          ],
+          "operationId": "processJsone",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/api/v1/test": {
+        "get": {
+          "tags": [
+            "user-requests-controller"
+          ],
+          "operationId": "testPresent",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  }

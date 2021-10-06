@@ -28,7 +28,7 @@ public class UserRequestService {
     @Autowired
     private UserRequestRepository userRequestRepository;
 
-    @Async
+    @Async("taskExecutor")    
     public CompletableFuture<List<UserRequestEntity>> saveUserRequest(Map<String,Object> userRequestSequence) throws Exception  {
         ObjectMapper objectMapper = new ObjectMapper();
         String user_request_json = objectMapper.writeValueAsString(userRequestSequence);
@@ -39,8 +39,16 @@ public class UserRequestService {
         
         LOGGER.info("Saving a list of user request of size {} records", userRequests.size());
         
-        playUserRequests(userRequests);
         userRequestRepository.saveAll(userRequests);
+
+        for (int i=0 ; i<1000 ; i++) {
+            
+            UserRequestEntity userRequest = userRequestRepository.findById(1L).get();
+            LOGGER.info("Changing group");
+            userRequest.setGroup(userRequest.getElevator()+1);
+            userRequestRepository.save(userRequest);
+        }
+
         
         LOGGER.info("Elapsed time: {}", (System.currentTimeMillis() - start));
 
@@ -56,31 +64,18 @@ public class UserRequestService {
         JSONArray callsArray = (JSONArray) fullJsonObject.get("calls");
 
         String str = "";
+        ObjectMapper objectMapper = new ObjectMapper();
+        
         try {
+
             Iterator<JSONObject> iterator = callsArray.iterator();
             while (iterator.hasNext()) {
                 
                 JSONObject jsonObject = iterator.next();
-
-                str = jsonObject.get("index").toString();
-                long index = Long.valueOf(str);
-
-                str = jsonObject.get("timestamp").toString();
-                long timestamp = Long.valueOf(str);
                 
-                str = jsonObject.get("building").toString();
-                long building = Long.valueOf(str);
-
-                str = jsonObject.get("group").toString();
-                long group = Long.valueOf(str);
-            
-                str = jsonObject.get("elevator").toString();
-                long elevator = Long.valueOf(str);
-            
-                str = jsonObject.get("sens").toString();
-                long sens = Long.valueOf(str);
-
-                UserRequestEntity userRequest = new UserRequestEntity(index,timestamp, building, group, elevator, sens);
+                str = jsonObject.toJSONString();                
+                UserRequestEntity userRequest = objectMapper.readValue(jsonObject.toJSONString(),UserRequestEntity.class);                
+                LOGGER.info("User request value is {}",userRequest.toString());
 
                 userRequests.add(userRequest);
            }
@@ -106,7 +101,7 @@ public class UserRequestService {
             
             period = newTimeStamp.longValue() - oldTimeStamp.longValue();
 
-            System.out.printf("sleep during %d ms\n", period);
+            LOGGER.info("sleep during {} ms after player user request {} of sequence {}", period,userRequestEntity.getId());
             try {
                 TimeUnit.MILLISECONDS.sleep(period);
             }
