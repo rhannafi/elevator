@@ -3,19 +3,28 @@ package io.ramzi.elevator.simulator.controllers;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.ramzi.elevator.simulator.dto.UserRequestDto;
 import io.ramzi.elevator.simulator.service.UserRequestService;
 
 @RestController
 public class UserRequestsController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRequestsController.class);
     @Autowired
     UserRequestService userRequestService;
     
@@ -31,6 +40,14 @@ public class UserRequestsController {
         userRequestService.saveUserRequest(userRequestSequence);
 	}
 
+    @PostMapping(path = "/api/v1/user_request", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserRequestDto createUserRequestDto(@RequestBody Map<String, Object> body) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();   
+        String user_request = objectMapper.writeValueAsString(body);
+        UserRequestDto userRequestDto = objectMapper.readValue(user_request,UserRequestDto.class); 
+        LOGGER.info(userRequestDto.toString());
+        return userRequestDto;
+    }
     
 
 

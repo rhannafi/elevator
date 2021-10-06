@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.ramzi.elevator.simulator.dao.repository.UserRequestRepository;
@@ -23,6 +24,7 @@ public class UserRequestEntityTest {
 	@Before
 	public void setup() {
 
+		MockitoAnnotations.initMocks(this);
 		long index = Long.valueOf("1");		
 		long timestamp = Long.valueOf("2");		
 		long building = Long.valueOf("3");
@@ -30,6 +32,7 @@ public class UserRequestEntityTest {
 		long elevator = Long.valueOf("5");
 		long sens = Long.valueOf("6");
 		userRequestEntity = new UserRequestEntity(index,timestamp, building, group, 1, elevator, sens);
+		
 	}
 
 	@Test
