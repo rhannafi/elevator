@@ -38,6 +38,9 @@ public class UserRequestsController {
 	public void processJson(@RequestBody Map<String, Object> userRequestSequence) throws Exception {        
         userRequestService.saveUserRequest(userRequestSequence);
         userRequestService.saveUserRequest(userRequestSequence);
+        userRequestService.saveUserRequest(userRequestSequence);
+        userRequestService.saveUserRequest(userRequestSequence);
+        userRequestService.saveUserRequest(userRequestSequence);
 	}
 
     @PostMapping(path = "/api/v1/user_request", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -41,18 +41,9 @@ public class UserRequestService {
         
         userRequestRepository.saveAll(userRequests);
 
-        for (int i=0 ; i<1000 ; i++) {
-            
-            UserRequestEntity userRequest = userRequestRepository.findById(1L).get();
-            LOGGER.info("Changing group");
-            userRequest.setGroup(userRequest.getElevator()+1);
-            userRequestRepository.save(userRequest);
-        }
+        changeGroups();
 
-        
-        LOGGER.info("Elapsed time: {}", (System.currentTimeMillis() - start));
-
-        
+        LOGGER.info("Elapsed time: {}", (System.currentTimeMillis() - start));                
 
         return CompletableFuture.completedFuture(userRequests);
     }
@@ -63,7 +54,6 @@ public class UserRequestService {
         JSONObject fullJsonObject = (JSONObject)JSONValue.parse(user_request_json);
         JSONArray callsArray = (JSONArray) fullJsonObject.get("calls");
 
-        String str = "";
         ObjectMapper objectMapper = new ObjectMapper();
         
         try {
@@ -72,8 +62,7 @@ public class UserRequestService {
             while (iterator.hasNext()) {
                 
                 JSONObject jsonObject = iterator.next();
-                
-                str = jsonObject.toJSONString();                
+
                 UserRequestEntity userRequest = objectMapper.readValue(jsonObject.toJSONString(),UserRequestEntity.class);                
                 LOGGER.info("User request value is {}",userRequest.toString());
 
@@ -84,6 +73,22 @@ public class UserRequestService {
         }
 
         return userRequests;
+    }
+    
+    @Async("taskExecutor")
+    public CompletableFuture<String> changeGroups() {
+        for (int i=0 ; i<50 ; i++) {
+
+            long size = userRequestRepository.count();
+            for (long j=1L; j< size; j++) {
+
+                UserRequestEntity userRequest = userRequestRepository.findById(1L).get();
+                LOGGER.info("Changing group userrequest={} and size repo = {}" , j , size);
+                userRequest.setGroup(userRequest.getElevator() + j);
+                userRequestRepository.save(userRequest);
+            }
+        }
+        return CompletableFuture.completedFuture("Changing group is done");
     }
 
     @Async

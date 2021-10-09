@@ -19,8 +19,8 @@ public class AsyncConfiguration {
     public Executor taskExecutor() {
         LOGGER.debug("Creating Async Task Executor");
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(5);
         executor.setQueueCapacity(100);
         // Allow thread free time 60 seconds: When the thread beyond the core thread is destroyed after the idle time arrives
         executor.setKeepAliveSeconds(60);

@@ -15,9 +15,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @EqualsAndHashCode
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestEntity {
@@ -26,7 +26,6 @@ public class UserRequestEntity {
     @Id
     @Column(name = "ID" , nullable = false)
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private long id;
 
     @NotNull
