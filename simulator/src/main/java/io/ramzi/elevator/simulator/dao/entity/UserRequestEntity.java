@@ -8,8 +8,6 @@ import javax.persistence.Id;
 
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestEntity {
-    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "ID" , nullable = false)

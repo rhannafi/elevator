@@ -2,6 +2,9 @@ package io.ramzi.elevator.simulator.controllers;
 
 import java.util.Map;
 
+
+import javax.servlet.ServletContext;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,6 +26,8 @@ import io.ramzi.elevator.simulator.service.UserRequestService;
 
 @RestController
 public class UserRequestsController {
+    @Autowired
+    ServletContext servletContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRequestsController.class);
     @Autowired
@@ -35,12 +40,18 @@ public class UserRequestsController {
 
     @JsonPropertyOrder({ "user_request_sequence_id" , "user_request_id" , "timestamp", "building", "group", "elevator", "sens" })
 	@RequestMapping(value = "/api/v1/process_json",method = RequestMethod.POST)
-	public void processJson(@RequestBody Map<String, Object> userRequestSequence) throws Exception {        
+    
+	public void processJson(@RequestBody Map<String, Object> userRequestSequence) throws Exception {
+
+       
         userRequestService.saveUserRequest(userRequestSequence);
         userRequestService.saveUserRequest(userRequestSequence);
-        userRequestService.saveUserRequest(userRequestSequence);
-        userRequestService.saveUserRequest(userRequestSequence);
-        userRequestService.saveUserRequest(userRequestSequence);
+        userRequestService.changeGroups();
+        userRequestService.changeGroups();
+        userRequestService.changeGroups();
+        userRequestService.changeGroups();
+        userRequestService.changeGroups();
+        
 	}
 
     @PostMapping(path = "/api/v1/user_request", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +62,4 @@ public class UserRequestsController {
         LOGGER.info(userRequestDto.toString());
         return userRequestDto;
     }
-    
-
-
 }

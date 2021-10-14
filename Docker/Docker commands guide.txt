@@ -1,0 +1,2 @@
+#get the ip a specific container, in our cas, the container is postgres:
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres

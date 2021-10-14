@@ -1,20 +1,11 @@
 package io.ramzi.elevator.simulator.dao.entity;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import io.ramzi.elevator.simulator.dao.repository.UserRequestRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserRequestEntityTest {
@@ -24,7 +15,6 @@ public class UserRequestEntityTest {
 	@Before
 	public void setup() {
 
-		MockitoAnnotations.initMocks(this);
 		long index = Long.valueOf("1");		
 		long timestamp = Long.valueOf("2");		
 		long building = Long.valueOf("3");

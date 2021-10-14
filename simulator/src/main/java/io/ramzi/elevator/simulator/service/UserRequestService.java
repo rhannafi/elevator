@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,17 @@ import io.ramzi.elevator.simulator.dao.repository.UserRequestRepository;
 
 @Service
 public class UserRequestService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRequestService.class);
+
+    @Autowired
+    UserRequestPlayerService userRequestPlayerService;
+   
     
     @Autowired
     private UserRequestRepository userRequestRepository;
 
-    @Async("taskExecutor")    
+    @Async("taskExecutor")
     public CompletableFuture<List<UserRequestEntity>> saveUserRequest(Map<String,Object> userRequestSequence) throws Exception  {
         ObjectMapper objectMapper = new ObjectMapper();
         String user_request_json = objectMapper.writeValueAsString(userRequestSequence);
@@ -40,12 +47,17 @@ public class UserRequestService {
         LOGGER.info("Saving a list of user request of size {} records", userRequests.size());
         
         userRequestRepository.saveAll(userRequests);
-
-        changeGroups();
+        
+        MDC.put("request_id", String.valueOf(UUID.randomUUID()));
+        LOGGER.info("MDC request_id from saveUserRequest : " + MDC.get("request_id"));
 
         LOGGER.info("Elapsed time: {}", (System.currentTimeMillis() - start));                
 
+        userRequestPlayerService.playUserRequests(1 , userRequests);
+        userRequestPlayerService.playUserRequests(2 , userRequests);
+        userRequestPlayerService.playUserRequests(3 , userRequests);
         return CompletableFuture.completedFuture(userRequests);
+
     }
 
     private List<UserRequestEntity> parseMap(String user_request_json) throws Exception {
@@ -64,7 +76,7 @@ public class UserRequestService {
                 JSONObject jsonObject = iterator.next();
 
                 UserRequestEntity userRequest = objectMapper.readValue(jsonObject.toJSONString(),UserRequestEntity.class);                
-                LOGGER.info("User request value is {}",userRequest.toString());
+                //LOGGER.info("User request value is {}",userRequest.toString());
 
                 userRequests.add(userRequest);
            }
@@ -83,7 +95,7 @@ public class UserRequestService {
             for (long j=1L; j< size; j++) {
 
                 UserRequestEntity userRequest = userRequestRepository.findById(1L).get();
-                LOGGER.info("Changing group userrequest={} and size repo = {}" , j , size);
+               // LOGGER.info("Changing group userrequest={} and size repo = {}" , j , size);
                 userRequest.setGroup(userRequest.getElevator() + j);
                 userRequestRepository.save(userRequest);
             }

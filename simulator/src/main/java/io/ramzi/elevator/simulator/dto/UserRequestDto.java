@@ -14,10 +14,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class UserRequestDto {
-    private static final long serialVersionUID = 1L;
-
-
     @JsonIgnore
     private long id;
 
